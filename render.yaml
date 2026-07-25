@@ -1,0 +1,24 @@
+services:
+  # 1. PYTHON BACKEND
+  - type: web
+    name: tasks-backend
+    runtime: python
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: DATABASE_URL
+        sync: false
+
+  # 2. REACT FRONTEND
+  - type: static
+    name: tasks-frontend
+    rootDir: frontend
+    buildCommand: npm install && npm run build
+    staticPublishPath: dist
+    envVars:
+      - key: VITE_API_URL
+        fromService:
+          type: web
+          name: tasks-backend
+          property: host
