@@ -11,8 +11,9 @@ services:
         sync: false
 
   # 2. REACT FRONTEND
-  - type: static
+  - type: web
     name: tasks-frontend
+    runtime: static
     rootDir: frontend
     buildCommand: npm install && npm run build
     staticPublishPath: dist
