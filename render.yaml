@@ -5,9 +5,11 @@ services:
     runtime: python
     plan: free # Ensures you are not prompted for payment details
     rootDir: backend
-    buildCommand: pip install -r requirements.txt
+    buildCommand: pip install --upgrade pip && pip install -r requirements.txt
     startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
     envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.9 # Fixes pydantic-core build error
       - key: DATABASE_URL
         sync: false # Prompts you in the Render UI to paste your Supabase URL
 
