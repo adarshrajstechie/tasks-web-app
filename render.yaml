@@ -1,16 +1,17 @@
 services:
-  # 1. PYTHON BACKEND
+  # 1. PYTHON BACKEND (FastAPI)
   - type: web
     name: tasks-backend
     runtime: python
+    plan: free # Ensures you are not prompted for payment details
     rootDir: backend
     buildCommand: pip install -r requirements.txt
     startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
     envVars:
       - key: DATABASE_URL
-        sync: false
+        sync: false # Prompts you in the Render UI to paste your Supabase URL
 
-  # 2. REACT FRONTEND
+  # 2. REACT FRONTEND (Vite + React)
   - type: web
     name: tasks-frontend
     runtime: static
