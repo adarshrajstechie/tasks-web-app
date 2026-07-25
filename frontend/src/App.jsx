@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import './App.css'
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || "http://127.0.0.1:8000"
+const API_BASE_URL = import.meta.env.VITE_API_URL || "https://tasks-backend-v0f7.onrender.com"
 
 export default function App() {
   const [tasks, setTasks] = useState([])
@@ -23,28 +23,44 @@ export default function App() {
 
   useEffect(() => { fetchTasks() }, [])
 
-  // 2. CREATE: Add new task
+  // 2. CREATE: Add new task using JSON body
   const handleAddTask = async (e) => {
     e.preventDefault()
     if (!newTitle.trim()) return
 
-    await fetch(`${API_BASE_URL}/api/tasks?title=${encodeURIComponent(newTitle)}`, {
-      method: 'POST'
-    })
-    setNewTitle('')
-    fetchTasks()
+    try {
+      await fetch(`${API_BASE_URL}/api/tasks`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ title: newTitle }),
+      })
+      setNewTitle('')
+      fetchTasks()
+    } catch (err) {
+      console.error("Error adding task:", err)
+    }
   }
 
   // 3. UPDATE: Toggle complete status
   const handleToggle = async (id) => {
-    await fetch(`${API_BASE_URL}/api/tasks/${id}`, { method: 'PUT' })
-    fetchTasks()
+    try {
+      await fetch(`${API_BASE_URL}/api/tasks/${id}`, { method: 'PUT' })
+      fetchTasks()
+    } catch (err) {
+      console.error("Error updating task:", err)
+    }
   }
 
   // 4. DELETE: Remove task
   const handleDelete = async (id) => {
-    await fetch(`${API_BASE_URL}/api/tasks/${id}`, { method: 'DELETE' })
-    fetchTasks()
+    try {
+      await fetch(`${API_BASE_URL}/api/tasks/${id}`, { method: 'DELETE' })
+      fetchTasks()
+    } catch (err) {
+      console.error("Error deleting task:", err)
+    }
   }
 
   return (

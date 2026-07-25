@@ -22,4 +22,4 @@ services:
     staticPublishPath: dist
     envVars:
       - key: VITE_API_URL
-        value: https://tasks-backend-7j6e.onrender.com # Explicit HTTPS URL
+        value: https://tasks-backend-v0f7.onrender.com # Live backend URL
